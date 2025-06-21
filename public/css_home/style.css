@@ -1,0 +1,76 @@
+.carousel-caption-layer {
+z-index: 10;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+padding: 20px;
+border-radius: 8px;
+}
+.carousel-inner {
+  height: 500px; /* Atur tinggi carousel */
+}
+
+.carousel-inner .carousel-item {
+  height: 100%; /* Carousel item ikuti tinggi parent */
+}
+
+.carousel-inner .carousel-item img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center center; /* Pastikan tengah yang muncul */
+}
+
+footer{
+    margin-top: 20px;
+}
+.kategori{
+    background-color: gainsboro;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.kategori-select button{
+    width: 90%;
+}
+
+.best-selling{
+    background-color: gainsboro;
+    height: 60px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-login{
+      border: none;
+      border-radius: 10px;
+      padding: 40px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #36d1dc, #5b86e5);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, #2bb7c9, #4679db);
+    }
+
+    .copyright {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .card-collapse{
+      border-radius: 10px;
+      padding: 40px;
+    }

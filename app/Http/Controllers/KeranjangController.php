@@ -78,7 +78,7 @@ class KeranjangController extends Controller
 
         if (!$keranjang || $keranjang->items->isEmpty()) {
             return back()->with('error', 'Keranjang kosong.');
-        }
+        } 
 
         $total = 0;
 

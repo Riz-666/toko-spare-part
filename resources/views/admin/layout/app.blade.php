@@ -27,7 +27,7 @@
     <link href="{{ asset('admin/css/css-costume/style.css') }}" rel="stylesheet">
     {{-- sweetAlert --}}
     <link rel="stylesheet" href="{{ asset('sweetalert2/dist/sweetalert2.all.min.css') }}">
-    {{-- select2 --}} 
+    {{-- select2 --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('select2/dist/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('select2/dist/select2-bootstrap4.css') }}">
@@ -366,6 +366,18 @@
             disallowedContent: 'strong em u p'
         });
     </script>
+
+    @if(session('status'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            title: 'Selamat Datang',
+            text: '{{ session('status') }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+    @endif
 </body>
 
 </html>

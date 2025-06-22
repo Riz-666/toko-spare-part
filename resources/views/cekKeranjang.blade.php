@@ -4,15 +4,16 @@
         <div>
             <h3>Daftar Keranjang</h3>
         </div>
+
         @php $grandTotal = 0; @endphp
 
-        @foreach ($keranjang->item as $item)
+        @forelse ($keranjang->item as $item)
             @php
                 $subtotal = $item->produk->harga * $item->jumlah;
                 $grandTotal += $subtotal;
             @endphp
 
-            <div class="card mb-3" style="max-width: 100%; margin-top:10px">
+            <div class="card mb-3 mt-3">
                 <div class="row g-0 align-items-center">
                     <div class="col-md-4">
                         <img src="{{ asset('storage/produk-img/' . $item->produk->gambar) }}" class="img-fluid rounded-start"
@@ -22,6 +23,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><strong>{{ $item->produk->nama }}</strong></h5>
                             <p class="card-text">Harga: Rp {{ number_format($item->produk->harga, 0, ',', '.') }}</p>
+
                             <form action="{{ route('keranjang.update', $item->id) }}" method="POST"
                                 class="d-flex align-items-center gap-2">
                                 @csrf
@@ -30,39 +32,42 @@
                                     class="form-control" style="width: 70px;">
                                 <button type="submit" class="btn btn-sm btn-success">Update</button>
                             </form>
+
                             <p class="mt-2">Subtotal: Rp {{ number_format($subtotal, 0, ',', '.') }}</p>
 
-                            <div class="text-end mt-4">
-                                <h5>Total: <strong>Rp {{ number_format($grandTotal, 0, ',', '.') }}</strong></h5>
+                            <!-- Tombol Aksi -->
+                            <div class="d-flex justify-content-end gap-2 mt-3">
+                                <!-- Tombol Checkout (Modal nanti) -->
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                                    Checkout
+                                </button>
 
-                                <div class="d-flex justify-content-end gap-2 mt-4">
-                                    <!-- Tombol Checkout -->
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkoutModal">
-                                        Checkout
-                                    </button>
-
-                                    <!-- Tombol Hapus -->
-                                    <form action="{{ route('keranjang.hapus', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus item ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-
-
+                                <!-- Tombol Hapus -->
+                                <form action="{{ route('keranjang.hapus', $item->id) }}" method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus item ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="alert alert-info mt-4">
+                Keranjang Anda masih kosong.
+            </div>
+        @endforelse
+
+        {{-- Total hanya ditampilkan jika ada isi --}}
+        @if ($keranjang->item->count())
+            <div class="text-end mt-4">
+                <h4>Total Seluruh: <strong>Rp {{ number_format($grandTotal, 0, ',', '.') }}</strong></h4>
+            </div>
+        @endif
     </div>
-
-
-
 
 
     <!-- Modal -->
@@ -77,7 +82,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Alamat Pengiriman</label>
-                            <textarea name="alamat" class="form-control" required></textarea>
+                            <textarea name="alamat" class="form-control">{{ Auth::user()->alamat }}</textarea>
                         </div>
                         <div class="form-group mt-2">
                             <label>Catatan</label>

@@ -83,6 +83,12 @@
                                             @auth
                                                 @if (auth()->user()->role === 'customer')
                                                     <div class="d-grid gap-2">
+                                                        {{-- Cek PRoduk --}}
+                                                        <button class="btn btn-sm btn-outline-info w-100" data-bs-toggle="modal"
+                                                            data-bs-target="#lihatProdukModal-{{ $prd->id }}">
+                                                            <i class="fas fa-eye"></i> Lihat Produk
+                                                        </button>
+
                                                         {{-- Tombol Masukkan ke Keranjang --}}
                                                         <form action="{{ route('keranjang.tambah') }}" method="POST">
                                                             @csrf
@@ -97,6 +103,8 @@
                                                             <i class="fas fa-bolt"></i> Pesan Sekarang
                                                         </button>
                                                     </div>
+
+
                                                     {{-- Modal Checkout --}}
                                                     <form action="{{ route('checkout.proses') }}" method="POST"
                                                         enctype="multipart/form-data">
@@ -144,6 +152,41 @@
                                                             </div>
                                                         </div>
                                                     </form>
+
+                                                    <!-- Modal Lihat Produk -->
+                                                    <div class="modal fade" id="lihatProdukModal-{{ $prd->id }}"
+                                                        tabindex="-1">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">{{ $prd->nama }}</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Tutup"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 text-center">
+                                                                            <img src="{{ asset('storage/produk-img/' . $prd->gambar) }}"
+                                                                                class="img-fluid rounded"
+                                                                                style="max-height: 300px; object-fit: cover;">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <h5 class="mb-3">Rp
+                                                                                {{ number_format($prd->harga, 0, ',', '.') }}
+                                                                            </h5>
+                                                                            <p>{!! $prd->deskripsi !!}</p>
+                                                                            <span class="badge bg-success">Terjual:
+                                                                                {{ $prd->total_terjual }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Tutup</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @endif
                                             @endauth
                                         </div>
@@ -161,42 +204,131 @@
     </div>
     <div class="best-selling mt-10">
         <h1 class="text-center mb-4">Best Selling Products</h1>
-        <div class="container mt-5">
-            <div class="row">
-                @forelse ($bestSelling as $prd)
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="{{ asset('storage/produk-img/' . $prd->gambar) }}" class="card-img-top"
-                                style="height: 180px; object-fit: cover;">
-                            <div class="card-body text-center">
-                                <h6>{{ $prd->nama }}</h6>
-                                {!! $prd->deskripsi !!}
-                                <p>Rp {{ number_format($prd->harga, 0, ',', '.') }}</p>
-                                <span class="badge bg-success">Terjual: {{ $prd->total_terjual }}</span>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            @forelse ($bestSelling as $prd)
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ asset('storage/produk-img/' . $prd->gambar) }}" class="card-img-top"
+                            style="height: 180px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h6>{{ $prd->nama }}</h6>
+                            {!! $prd->deskripsi !!}
+                            <p>Rp {{ number_format($prd->harga, 0, ',', '.') }}</p>
+                            <span class="badge bg-success">Terjual: {{ $prd->total_terjual }}</span>
 
-                                @auth
-                                    @if (auth()->user()->role === 'customer')
-                                        <div class="d-grid gap-2 mt-2">
-                                            <form action="{{ route('keranjang.tambah') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="produk_id" value="{{ $prd->id }}">
-                                                <button type="submit" class="btn btn-sm btn-secondary w-100">
-                                                    <i class="fas fa-cart-plus"></i> Keranjang
-                                                </button>
-                                            </form>
-                                            <button class="btn btn-sm btn-primary w-100" data-bs-toggle="modal"
-                                                data-bs-target="#checkoutModal-{{ $prd->id }}">
-                                                <i class="fas fa-bolt"></i> Pesan Sekarang
+                            @auth
+                                @if (auth()->user()->role === 'customer')
+                                    <div class="d-grid gap-2 mt-2">
+                                        {{-- Cek PRoduk --}}
+                                        <button class="btn btn-sm btn-outline-info w-100" data-bs-toggle="modal"
+                                            data-bs-target="#lihatProdukBestModal-{{ $prd->id }}">
+                                            <i class="fas fa-eye"></i> Lihat Produk
+                                        </button>
+
+
+                                        {{-- Tombol Masukkan ke Keranjang --}}
+                                        <form action="{{ route('keranjang.tambah') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="produk_id" value="{{ $prd->id }}">
+                                            <button type="submit" class="btn btn-sm btn-secondary w-100">
+                                                <i class="fas fa-cart-plus"></i> Masukkan ke Keranjang
                                             </button>
+                                        </form>
+
+                                        {{-- Tombol Pesan Sekarang --}}
+                                        <button class="btn btn-sm btn-primary w-100" data-bs-toggle="modal"
+                                            data-bs-target="#checkoutBestModal-{{ $prd->id }}">
+                                            <i class="fas fa-bolt"></i> Pesan Sekarang
+                                        </button>
+                                    </div>
+
+                                    {{-- Modal Checkout --}}
+                                    <form action="{{ route('checkout.proses') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="produk_id" value="{{ $prd->id }}">
+                                        <div class="modal fade" id="checkoutBestModal-{{ $prd->id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Checkout Pesanan</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>Alamat Pengiriman</label>
+                                                            <textarea name="alamat" class="form-control" required></textarea>
+                                                        </div>
+                                                        <div class="form-group mt-2">
+                                                            <label>Catatan</label>
+                                                            <textarea name="catatan" class="form-control"></textarea>
+                                                        </div>
+                                                        <div class="form-group mt-2">
+                                                            <label for="jumlah">Jumlah:</label>
+                                                            <input type="number" name="jumlah" class="form-control"
+                                                                min="1" value="1">
+                                                        </div>
+                                                        <div class="form-group mt-2">
+                                                            <label>Metode Pembayaran</label>
+                                                            <select name="metode_pembayaran" class="form-control" required>
+                                                                <option value="qris">QRIS</option>
+                                                                <option value="kartu_kredit">Kartu Kredit
+                                                                </option>
+                                                                <option value="dana">Dana</option>
+                                                                <option value="cod">COD</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-success">Pesan
+                                                            Sekarang</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    @endif
-                                @endauth
-                            </div>
+                                    </form>
+
+                                    <!-- Modal Lihat Produk -->
+                                    <div class="modal fade" id="lihatProdukBestModal-{{ $prd->id }}" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">{{ $prd->nama }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Tutup"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6 text-center">
+                                                            <img src="{{ asset('storage/produk-img/' . $prd->gambar) }}"
+                                                                class="img-fluid rounded"
+                                                                style="max-height: 300px; object-fit: cover;">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h5 class="mb-3">Rp
+                                                                {{ number_format($prd->harga, 0, ',', '.') }}</h5>
+                                                            <p>{!! $prd->deskripsi !!}</p>
+                                                            <span class="badge bg-success">Terjual:
+                                                                {{ $prd->total_terjual }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Tutup</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endauth
                         </div>
                     </div>
-                @empty
-                    <p class="text-center text-muted">Belum ada data penjualan.</p>
-                @endforelse
-            </div>
+                </div>
+            @empty
+                <p class="text-center text-muted">Belum ada data penjualan.</p>
+            @endforelse
         </div>
-    @endsection
+    </div>
+@endsection

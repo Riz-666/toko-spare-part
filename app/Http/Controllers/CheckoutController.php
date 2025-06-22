@@ -12,42 +12,6 @@ use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
-    // public function proses(Request $request)
-    // {
-    //     $user = Auth::user();
-
-    //     $keranjang = $user->keranjang()->with('item.produk')->first();
-    //     $items = $keranjang->item;
-
-    //     $total = $items->sum(function ($items) {
-    //         return $items->produk->harga * $items->jumlah;
-    //     });
-
-    //     $pesanan = Pesanan::create([
-    //         'user_id' => $user->id,
-    //         'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
-    //         'status' => 'menunggu',
-    //         'total' => $total,
-    //         'metode_pembayaran' => $request->metode_pembayaran,
-    //         'alamat_pengiriman' => $request->alamat,
-    //         'catatan' => $request->catatan,
-    //     ]);
-
-    //     foreach ($items as $item) {
-    //         PesananItem::create([
-    //             'pesanan_id' => $pesanan->id,
-    //             'produk_id' => $item->produk_id,
-    //             'harga' => $item->produk->harga,
-    //             'jumlah' => $item->jumlah,
-    //             'subtotal' => $item->produk->harga * $item->jumlah,
-    //         ]);
-    //     }
-
-    //     // Hapus keranjang
-    //     $keranjang->item()->delete();
-
-    //     return redirect()->route('pesanan.detail', $pesanan->id)->with('success', 'Pesanan berhasil dibuat');
-    // }
 
     public function proses(Request $request)
     {

@@ -15,13 +15,19 @@
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
     {{-- CSS Home --}}
     <link rel="stylesheet" href="{{ asset('css_home/style.css') }}">
+
 </head>
 
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
 
     @include('layout.navbar')
 
-    @yield('content')
+    <main class="py-4" style="padding-bottom: 80px;">
+        @yield('content')
+    </main>
+
+
 
     @include('layout.footer')
 </body>
@@ -37,12 +43,37 @@
 <script src="{{ asset('fontawesome/js/all.min.js') }}"></script>
 
 @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil !!!',
-                text: '{{ session('success') }}'
-            });
-        </script>
-    @endif
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil !!!',
+            text: '{{ session('success') }}'
+        });
+    </script>
+@endif
+
+@if (session('status'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            title: 'Selamat Datang',
+            text: '{{ session('status') }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+@endif
+
+@if (session('logout'))
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: '{{ session('logout') === true ? 'Berhasil Logout' : session('logout') }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>
+@endif
+
 </html>

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
+  <div class="container">
     <a class="navbar-brand" href="/">
       <img src="{{ asset('/storage/default-img/logo-ct.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
       Project

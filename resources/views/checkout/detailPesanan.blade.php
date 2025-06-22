@@ -23,7 +23,7 @@
                         <img src="{{ asset('storage/default-img/qrcode.jpg') }}" alt="QRIS" width="250">
                         <p class="text-muted mt-2">Silakan scan kode QR untuk menyelesaikan pembayaran.</p>
                     </div>
-                @elseif ($pesanan->metode_pembayaran === 'kredit_card')
+                @elseif ($pesanan->metode_pembayaran === 'kartu_kredit')
                     <div class="mt-3">
                         <p><strong>No Rekening Admin:</strong> 1234 5678 9000 a/n Toko Sparepart</p>
                         <p class="text-muted">Silakan transfer ke rekening di atas dan upload bukti pembayaran.</p>

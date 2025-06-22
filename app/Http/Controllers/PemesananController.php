@@ -18,8 +18,13 @@ class PemesananController extends Controller
 
     // Ambil semua item dari semua pesanan user
     $items = PesananItem::with(['produk', 'pesanan'])
-                ->whereHas('pesanan', fn($q) => $q->where('user_id', $user->id))
-                ->get();
+        ->whereHas('pesanan', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })
+        ->join('pesanan', 'pesanan_item.pesanan_id', '=', 'pesanan.id')
+        ->orderByRaw("FIELD(pesanan.status, 'diproses', 'dikirim', 'menunggu', 'selesai', 'dibatalkan')")
+        ->select('pesanan_item.*') // penting! agar kolom yang digunakan tetap dari pesanan_item
+        ->get();
 
     return view('pemesanan', [
         'judul' => 'Kelola Pesanan',

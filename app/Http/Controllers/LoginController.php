@@ -34,7 +34,7 @@ class LoginController extends Controller
             if (Auth::user()->role == 'admin') {
                 return redirect()
                     ->route('admin.index')
-                    ->with('status', Auth::user()->nama);
+                    ->with('status', Auth::user()->nama)->with('status', Auth::user()->nama);
             } elseif (Auth::user()->role == 'customer') {
                 return redirect()
                     ->route('index')
@@ -47,7 +47,7 @@ class LoginController extends Controller
 
     public function logout(){
         Auth::logout();
-        return redirect()->route('index');
+        return redirect()->route('index')->with('logout', 'Berhasil logout');
     }
 
     public function unlogin(){

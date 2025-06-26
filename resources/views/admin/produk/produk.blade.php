@@ -10,7 +10,7 @@
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <a href="{{ Route('add.produk') }}" class="btn btn-primary" style="margin-left: 10px"><i class="fa fa-plus"></i> Tambah Produk</a>
-                            <table class="table align-items-center mb-0">
+                            <table class="table align-items-center mb-0" id="table1">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">

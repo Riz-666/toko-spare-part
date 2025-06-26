@@ -13,26 +13,26 @@
       <ul class="navbar-nav">
         <!-- Selalu tampil -->
         <li class="nav-item">
-          <a class="nav-link" href="/"><i class="fa fa-home"></i> Beranda</a>
+          <a class="nav-link {{ request()->routeIs('index') ? 'active' : '' }}" href="/"><i class="fa fa-home"></i> Beranda</a>
         </li>
 
 
         @guest
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('login') }}"><i class="fa fa-sign-in-alt"></i> Login</a>
+            <a class="nav-link {{ request()->routeIs('login') ? 'active' : '' }}" href="{{ route('login') }}"><i class="fa fa-sign-in-alt"></i> Login</a>
           </li>
         @endguest
 
         @auth
           @if(auth()->user()->role === 'customer')
             <li class="nav-item">
-              <a class="nav-link" href="{{ Route('profile.edit') }}"><i class="fa fa-user"></i> Profile</a>
+              <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ Route('profile.edit') }}"><i class="fa fa-user"></i> Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ Route('cek.keranjang') }}"><i class="fa fa-shopping-cart"></i> Keranjang</a>
+              <a class="nav-link {{ request()->routeIs('cek.keranjang') ? 'active' : '' }}" href="{{ Route('cek.keranjang') }}"><i class="fa fa-shopping-cart"></i> Keranjang</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ Route('detail.pemesanan') }}"><i class="fa fa-history"></i> Pemesanan</a>
+              <a class="nav-link {{ request()->routeIs('detail.pemesanan') ? 'active' : '' }}" href="{{ Route('detail.pemesanan') }}"><i class="fa fa-history"></i> Pemesanan</a>
             </li>
           @endif
 

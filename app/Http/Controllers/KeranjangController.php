@@ -43,7 +43,6 @@ class KeranjangController extends Controller
         return back()->with('success', 'Produk dimasukkan ke keranjang');
     }
 
-    // KeranjangController.php
     public function updateJumlah(Request $request, $id)
     {
         $item = KeranjangItem::findOrFail($id);
@@ -78,7 +77,7 @@ class KeranjangController extends Controller
 
         if (!$keranjang || $keranjang->items->isEmpty()) {
             return back()->with('error', 'Keranjang kosong.');
-        } 
+        }
 
         $total = 0;
 

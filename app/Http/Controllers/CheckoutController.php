@@ -12,7 +12,6 @@ use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
-
     public function proses(Request $request)
     {
         $request->validate([
@@ -122,5 +121,47 @@ class CheckoutController extends Controller
         $keranjang->item()->delete();
 
         return redirect()->route('pesanan.detail', $pesanan->id)->with('success', 'Pesanan berhasil dibuat dari keranjang');
+    }
+
+    public function checkoutSatuan(Request $request, $itemId)
+    {
+        $request->validate([
+            'alamat' => 'required|string',
+            'metode_pembayaran' => 'required|in:qris,kartu_kredit,dana,cod',
+        ]);
+
+        $user = Auth::user();
+
+        $item = \App\Models\KeranjangItem::with('produk', 'keranjang')
+            ->where('id', $itemId)
+            ->whereHas('keranjang', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })
+            ->firstOrFail();
+
+        // Simpan pesanan
+        $pesanan = \App\Models\Pesanan::create([
+            'user_id' => $user->id,
+            'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
+            'status' => 'menunggu',
+            'total' => $item->produk->harga * $item->jumlah,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'alamat_pengiriman' => $request->alamat,
+            'catatan' => $request->catatan,
+        ]);
+
+        // Simpan item pesanan
+        \App\Models\PesananItem::create([
+            'pesanan_id' => $pesanan->id,
+            'produk_id' => $item->produk_id,
+            'harga' => $item->produk->harga,
+            'jumlah' => $item->jumlah,
+            'subtotal' => $item->produk->harga * $item->jumlah,
+        ]);
+
+        // Hapus item dari keranjang
+        $item->delete();
+
+        return redirect()->route('pesanan.detail', $pesanan->id)->with('success', 'Checkout berhasil untuk 1 produk');
     }
 }

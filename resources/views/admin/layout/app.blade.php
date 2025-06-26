@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <title>
-        Soft UI Dashboard by Creative Tim
+        Admin Dashboard
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -23,6 +23,10 @@
     <link id="pagestyle" href="{{ asset('admin/assets/css/soft-ui-dashboard.css') }}" rel="stylesheet" />
     <!-- DataTables -->
     <link href="{{ asset('DataTables/datatables.min.css') }}" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+
     <!-- costume-css -->
     <link href="{{ asset('admin/css/css-costume/style.css') }}" rel="stylesheet">
     {{-- sweetAlert --}}
@@ -111,12 +115,40 @@
         </div>
     </div>
     </div>
+
+    <!-- dataTables -->
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+    <script src="/DataTables/datatables.js"></script>
     <!--   Core JS Files   -->
     <script src="{{ asset('admin/assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/plugins/chartjs.min.js') }}"></script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{{ asset('admin/assets/js/soft-ui-dashboard.min.js') }}"></script>
+    <!-- fontawesome js -->
+    <script src="{{ asset('fontawesome/js/all.min.js') }}"></script>
+    <!-- End custom js for this page-->
+    <!-- jQuery (wajib untuk DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery & DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <!-- Costume-js -->
+    <script src="{{ asset('admin/js-costume/style.js') }}"></script>
+    {{-- sweetAlert --}}
+    <script src="{{ asset('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
+    {{-- Select2 --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <!-- CKEditor -->
+    <script src="https://cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
+    {{-- Axios --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");
 
@@ -296,27 +328,7 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
-    <!-- Github buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('admin/assets/js/soft-ui-dashboard.min.js') }}"></script>
-    <!-- fontawesome js -->
-    <script src="{{ asset('fontawesome/js/all.min.js') }}"></script>
-    <!-- End custom js for this page-->
-    <!-- dataTables -->
-    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
-    <!-- Costume-js -->
-    <script src="{{ asset('admin/js-costume/style.js') }}"></script>
-    {{-- sweetAlert --}}
-    <script src="{{ asset('sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
-    {{-- Select2 --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <!-- CKEditor -->
-    <script src="https://cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
-    {{-- Axios --}}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    {{-- JQuery --}}
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
     @if (session('success'))
@@ -328,6 +340,19 @@
             });
         </script>
     @endif
+
+    <script>
+        $(document).ready(function() {
+            $('#table1').DataTable({
+                responsive: true,
+                columnDefs: [{
+                    defaultContent: "-",
+                    targets: "_all"
+                }],
+            });
+        });
+    </script>
+
 
     <script type="text/javascript">
         $(document).on('click', '.show_confirm', function(event) {
@@ -367,16 +392,16 @@
         });
     </script>
 
-    @if(session('status'))
-    <script>
-        Swal.fire({
-            position: "top-end",
-            title: 'Selamat Datang',
-            text: '{{ session('status') }}',
-            showConfirmButton: false,
-            timer: 3000
-        });
-    </script>
+    @if (session('status'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                title: 'Selamat Datang',
+                text: '{{ session('status') }}',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        </script>
     @endif
 </body>
 

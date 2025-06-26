@@ -1,5 +1,4 @@
 @extends('layout.app')
-
 @section('content')
     <div id="carouselExampleIndicators" class="carousel slide position-relative" data-bs-ride="carousel">
         <!-- Teks di tengah gambar -->
@@ -79,7 +78,10 @@
                                         <div class="card-body text-center">
                                             <h6>{{ $prd->nama }}</h6>
                                             {!! $prd->deskripsi !!}
-                                            <p>Rp {{ number_format($prd->harga, 0, ',', '.') }}</p>
+                                            <p><span class="badge bg-success"><i class="fa fa-tag"></i>
+                                                Rp {{ number_format($prd->harga, 0, ',', '.') }}
+                                            </span></p>
+
                                             @auth
                                                 @if (auth()->user()->role === 'customer')
                                                     <div class="d-grid gap-2">
@@ -120,7 +122,7 @@
                                                                     <div class="modal-body">
                                                                         <div class="form-group">
                                                                             <label>Alamat Pengiriman</label>
-                                                                            <textarea name="alamat" class="form-control" required></textarea>
+                                                                            <textarea name="alamat" class="form-control" required>{{ Auth::user()->alamat }}</textarea>
                                                                         </div>
                                                                         <div class="form-group mt-2">
                                                                             <label>Catatan</label>
@@ -175,6 +177,9 @@
                                                                                 {{ number_format($prd->harga, 0, ',', '.') }}
                                                                             </h5>
                                                                             <p>{!! $prd->deskripsi !!}</p>
+                                                                            <span class="badge bg-secondary">Stok:
+                                                                                {{ $prd->stok }}</span>
+                                                                            <br>
                                                                             <span class="badge bg-success">Terjual:
                                                                                 {{ $prd->total_terjual }}</span>
                                                                         </div>
@@ -309,6 +314,9 @@
                                                             <h5 class="mb-3">Rp
                                                                 {{ number_format($prd->harga, 0, ',', '.') }}</h5>
                                                             <p>{!! $prd->deskripsi !!}</p>
+                                                            <span class="badge bg-secondary">Stok:
+                                                                {{ $prd->stok }}</span>
+                                                            <br>
                                                             <span class="badge bg-success">Terjual:
                                                                 {{ $prd->total_terjual }}</span>
                                                         </div>

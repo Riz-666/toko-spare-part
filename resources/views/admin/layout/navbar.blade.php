@@ -8,7 +8,7 @@
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
             <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                <a href="{{ Route('profile.edit') }}" class="nav-link text-body font-weight-bold px-0">
+                <a href="{{ Route('profile.edit.admin') }}" class="nav-link text-body font-weight-bold px-0">
                         <i class="fa fa-user me-sm-1"></i>
                         <span class="d-sm-inline d-none">Profile</span>
                     </a>

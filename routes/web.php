@@ -42,8 +42,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
 
     //Profile
-    Route::get('/profile', [AdminController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [AdminController::class, 'update'])->name('profile.update');
+    Route::get('/profile/admin', [AdminController::class, 'edit'])->name('profile.edit.admin');
+    Route::post('/profile/admin', [AdminController::class, 'update'])->name('profile.update.admin');
 
     //Kelola User
     Route::get('/admin/user', [UserController::class, 'index'])->name('kelola.user');
@@ -124,4 +124,12 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     // dari chart
     Route::post('/keranjang/checkout', [CheckoutController::class, 'checkoutDariKeranjang'])->name('keranjang.checkout');
+    // per-item
+    Route::post('/keranjang/checkout/item/{id}', [CheckoutController::class, 'checkoutSatuan'])->name('keranjang.checkout.satuan');
+
+    //Hapus Pesanan
+    Route::delete('/pesanan/{id}/hapus', [PemesananController::class, 'destroy'])->name('pesanan.hapus');
+
+    //Cetak Bukti Pemesanan
+    Route::get('/pesanan/cetak/{id}',[PemesananController::class, 'cetak'])->name('pesanan.cetak');
 });

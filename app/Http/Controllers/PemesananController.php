@@ -63,4 +63,20 @@ class PemesananController extends Controller
             'bukti' => $bukti,
         ]);
     }
+
+    public function batalkan($id)
+    {
+        $user = Auth::user();
+
+        $pesanan = Pesanan::where('id', $id)
+            ->where('user_id', $user->id)
+            ->where('status', 'menunggu') // hanya bisa batalkan kalau status menunggu
+            ->firstOrFail();
+
+        $pesanan->update([
+            'status' => 'dibatalkan',
+        ]);
+
+        return redirect()->route('detail.pemesanan')->with('success');
+    }
 }

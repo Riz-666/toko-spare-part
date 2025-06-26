@@ -65,36 +65,69 @@
 @endif
 
 <script type="text/javascript">
-        $(document).on('click', '.show_confirm', function(event) {
-            event.preventDefault();
+    $(document).on('click', '.show_confirm', function(event) {
+        event.preventDefault();
 
-            var form = $(this).closest("form");
-            var name = $(this).data("konf-delete");
+        var form = $(this).closest("form");
+        var name = $(this).data("konf-delete");
 
-            Swal.fire({
-                title: 'Konfirmasi Hapus Pesanan?',
-                html: "Data <strong>" + name + "</strong> akan dihapus dan tidak dapat dikembalikan!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e3342f',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, hapus',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Terhapus!',
-                        text: 'Data berhasil dihapus.',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        form.submit();
-                    });
-                }
-            });
+        Swal.fire({
+            title: 'Konfirmasi Hapus Pesanan?',
+            html: "Data <strong>" + name + "</strong> akan dihapus dan tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e3342f',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Terhapus!',
+                    text: 'Data berhasil dihapus.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    form.submit();
+                });
+            }
         });
-    </script>
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).on('click', '.show_confirm_batal', function(event) {
+        event.preventDefault();
+
+        var form = $(this).closest("form");
+        var name = $(this).data("konf-delete");
+
+        Swal.fire({
+            title: 'Konfirmasi Batalkan Pesanan?',
+            html: "Pesanan <strong>" + name + "</strong> akan Batalkan dan tidak dapat Di Ubah Kembali!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e3342f',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Di Batalkan!',
+                    text: 'Pesanan Berhasil DI batalkan!',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    form.submit();
+                });
+            }
+        });
+    });
+</script>
 
 @if (session('logout'))
     <script>

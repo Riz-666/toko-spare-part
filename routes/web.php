@@ -132,4 +132,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     //Cetak Bukti Pemesanan
     Route::get('/pesanan/cetak/{id}',[PemesananController::class, 'cetak'])->name('pesanan.cetak');
+
+    //pesanan batal
+    Route::post('/pesanan/{id}/batalkan', [PemesananController::class, 'batalkan'])->name('pesanan.batalkan');
+
 });

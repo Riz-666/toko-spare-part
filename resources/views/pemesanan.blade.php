@@ -40,16 +40,29 @@
                                         class="btn btn-sm btn-outline-dark mt-3 w-100">
                                         <i class="fas fa-print"></i> Cetak Bukti Pemesanan
                                     </a>
-                                    <form action="{{ route('pesanan.hapus', $item->pesanan->id) }}" method="POST" class="mt-2">
-                                        @csrf
-                                        @method('DELETE')
-                                        @if($item->pesanan->status == 'menunggu')
-                                        <button class="btn btn-sm btn-danger show_confirm w-100" data-konf-delete="{{ $item->produk->nama }}" ><i class="fas fa-xmark show_confirm"></i> Batalkan
-                                            Pesanan</button>
-                                        @else
-                                            <button class="btn btn-sm btn-secondary w-100" disabled><i class="fas fa-xmark show_confirm"></i> Batalkan Pesanan</button>
-                                        @endif
-                                    </form>
+
+
+                                    @if ($item->pesanan->status == 'dibatalkan')
+                                        <form action="{{ route('pesanan.hapus', $item->pesanan->id) }}" method="POST"
+                                            class="mt-2">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger show_confirm w-100"
+                                                data-konf-delete="{{ $item->produk->nama }}"><i class="fas fa-trash show_confirm"></i> Di Batalkan, Hapus Pesanan?</button>
+                                        </form>
+                                    @elseif ($item->pesanan->status == 'menunggu')
+                                        <form action="{{ route('pesanan.batalkan', $item->pesanan->id) }}" method="POST"
+                                            class="mt-2">
+                                            @csrf
+                                            <button class="btn btn-sm btn-warning show_confirm_batal w-100"
+                                                data-konf-delete="{{ $item->produk->nama }}">
+                                                <i class="fas fa-xmark show_confirm_batal"></i> Batalkan Pesanan
+                                            </button>
+                                        </form>
+                                    @else
+                                        <button class="btn btn-sm btn-secondary w-100" disabled><i
+                                                class="fas fa-xmark show_confirm"></i>Tidak Bisa Di Batalkan</button>
+                                    @endif
 
                                 </div>
                             </div>

@@ -1,0 +1,1 @@
+[29-Jun-2025 10:52:35 UTC] PHP Fatal error:  Trait "Spatie\Permission\Traits\HasRoles" not found in /home/lestarim/toko-spare-part/app/Models/User.php on line 12

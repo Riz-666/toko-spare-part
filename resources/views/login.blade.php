@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="card card-login">
                     <h3 class="text-center mb-3 fw-bold text-primary">Login</h3>
-                    <p class="text-center text-muted mb-4">Enter your email and password to sign in</p>
+                    <p class="text-center text-muted mb-4">Masukan Email Dan Password Untuk Login</p>
                     @if (session('error'))
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('error') }}
@@ -26,14 +26,17 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" name="password" placeholder="password" required>
                         </div>
-
+                        <div class="form-check">
+                            <input type="checkbox" name="remember" id="remember" class="form-check-input">
+                            <label for="remember" class="form-check-label">Tetap Masuk</label>
+                        </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">SIGN IN</button>
+                            <button type="submit" class="btn btn-primary">Masuk</button>
                         </div>
                     </form>
 
                     <div class="text-center mt-3">
-                        <small>Don't have an account? <a href="{{ Route('register.form') }}">Register</a></small>
+                        <small>Belum Punya Akun? <a href="{{ Route('register.form') }}">Daftar</a></small>
                     </div>
                 </div>
             </div>

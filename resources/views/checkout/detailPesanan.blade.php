@@ -10,7 +10,9 @@
                 <p><strong>Kode Pesanan:</strong> {{ $pesanan->kode_pesanan }}</p>
                 <p><strong>Status:</strong> <span class="badge bg-warning text-dark">{{ ucfirst($pesanan->status) }}</span>
                 </p>
-                <p><strong>Total:</strong> <span class="text-success fw-bold">Rp
+                <p><strong>Harga:</strong> Rp {{ number_format($pesanan->item->first()->harga, 0, ',', '.') }}</p>
+                <p><strong>Ongkir:</strong> Rp {{ number_format($pesanan->ongkir, 0, ',', '.') }}</p>
+                <p><strong>Total Bayar:</strong> <span class="text-success fw-bold">Rp
                         {{ number_format($pesanan->total, 0, ',', '.') }}</span></p>
                 <p><strong>Alamat Pengiriman:</strong> {{ $pesanan->alamat_pengiriman }}</p>
                 <p><strong>Catatan:</strong> {{ $pesanan->catatan ?? '-' }}</p>

@@ -2,6 +2,16 @@
     @section('content')
         <form action="{{ Route('add.produk.proses') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <strong>Terjadi kesalahan:</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="container">
                 <div class="card">
                     <div class="card-body">
@@ -19,7 +29,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="nama_produk">Nama Produk</label><br>
-                                <input type="text" class="form-control" name="nama" >
+                                <input type="text" class="form-control" name="nama" value="{{ old('nama') }}">
                             </div>
                         </div>
                         <br>
@@ -33,15 +43,18 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="telepon">Stok</label><br>
-                                <input type="number" class="form-control" name="stok" id="">
+                                <input type="number" class="form-control" name="stok" id="" value="{{ old('stok') }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="alamat">Harga</label><br>
-                                <input type="number" class="form-control" name="harga" id="">
+                                <input type="number" class="form-control" name="harga" id="" value="{{ old('harga') }}">
                             </div>
                             <div class="col-md-12">
                                 <label for="foto">Foto</label><br>
                                 <input class="form-control" type="file" name="gambar" id="">
+                                @error('gambar')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <br>

@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('layout.app')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('user.update.profile') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
@@ -30,8 +30,8 @@
         <div class="form-group mt-2">
             <label>Foto Profil</label>
             @if ($user->foto)
-                <div class="mb-2">
-                    <img src="{{ asset('storage/user-img/' . $user->foto) }}" width="100">
+                <div class="mb-2" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden;">
+                    <img src="{{ asset('storage/user-img/' . $user->foto) }}" width="100" style="width: 100%; height: 100%;">
                 </div>
                 @else
                 <div class="mb-2">

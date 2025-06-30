@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('admin.layout.app')
 
 @section('content')
 
@@ -9,7 +9,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('profile.update.admin') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">

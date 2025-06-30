@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,7 +16,8 @@
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
     {{-- CSS Home --}}
     <link rel="stylesheet" href="{{ asset('css_home/style.css') }}">
-
+    <title>{{ $judul }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('/storage/default-img/logo-ct.png') }}">
 </head>
 
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
@@ -25,12 +27,14 @@
 
     <main class="py-4" style="padding-bottom: 80px;">
         @yield('content')
+        
     </main>
 
 
 
     @include('layout.footer')
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- bootstrap js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -106,12 +110,13 @@
 
         Swal.fire({
             title: 'Konfirmasi Batalkan Pesanan?',
-            html: "Pesanan <strong>" + name + "</strong> akan Batalkan dan tidak dapat Di Ubah Kembali!",
+            html: "Pesanan <strong>" + name +
+                "</strong> akan Batalkan dan tidak dapat Di Ubah Kembali!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#e3342f',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, hapus',
+            confirmButtonText: 'Ya, Batalkan Pesanan',
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {

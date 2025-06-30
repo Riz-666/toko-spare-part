@@ -1,12 +1,13 @@
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
+<aside
+    class="sidenav d-none d-md-block navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
     id="sidenav-main">
+
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html"
-            target="_blank">
-            <img src="{{ asset('admin/assets/img/logo-ct.png') }}" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold">Toko Spare Part</span>
+        <a class="navbar-brand m-0" href="{{ Route('admin.index') }}">
+            <img src="{{ asset('/storage/default-img/logo-ct.png') }}" class="navbar-brand-img h-100" alt="main_logo">
+            <span class="ms-1 font-weight-bold">Lestari Motor</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -114,6 +115,21 @@
 
                     </div>
                     <span class="nav-link-text ms-1">Pembayaran</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.chat.list') ? 'active' : '' }}"
+                    href="{{ Route('admin.chat.list') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" stroke="#344767"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.5 8.5 0 018 8v.5z" />
+                        </svg>
+                    </div>
+                    <span class="nav-link-text ms-1">Live Chat</span>
                 </a>
             </li>
         </ul>

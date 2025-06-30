@@ -88,16 +88,18 @@ class PesananController extends Controller
 
         return back()->with('success', 'Pesanan berhasil dibuat!');
     }
+    
     public function detail($id)
     {
         $pesanan = Pesanan::with(['user', 'item.produk'])->findOrFail($id);
 
         // Validasi: hanya pemilik pesanan yang bisa lihat
-        if (auth()->id() !== $pesanan->user_id) {
+        if (!auth()->user()->is($pesanan->user)) {
             abort(403, 'Tidak diizinkan mengakses pesanan ini.');
         }
 
         return view('checkout.detailPesanan', [
+            'judul' => 'Detail Pesanan',
             'pesanan' => $pesanan,
         ]);
     }

@@ -38,6 +38,12 @@ return new class extends Migration {
         Schema::table('pembayaran', function (Blueprint $table) {
             $table->foreign('pesanan_id')->references('id')->on('pesanan')->onDelete('cascade');
         });
+
+        //live chat
+    //     Schema::table('chat', function (Blueprint $table) {
+    //         $table->foreign('from_id')->references('id')->on('users')->onDelete('cascade');
+    //         $table->foreign('to_id')->references('id')->on('users')->onDelete('cascade');
+    //     });
     }
 
     public function down(): void

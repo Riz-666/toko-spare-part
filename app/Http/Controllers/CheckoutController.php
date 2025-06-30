@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\CheckoutController;
+use App\Models\KeranjangItem;
 use App\Models\Pesanan;
 use App\Models\PesananItem;
 use App\Models\Produk;
@@ -26,11 +27,14 @@ class CheckoutController extends Controller
 
         $total = $produk->harga * $request->jumlah;
 
+        $ongkir = 10000;
+
         $pesanan = Pesanan::create([
             'user_id' => $user->id,
             'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
             'status' => 'menunggu',
-            'total' => $total,
+            'total' => $total + $ongkir,
+            'ongkir' => $ongkir,
             'metode_pembayaran' => $request->metode_pembayaran,
             'alamat_pengiriman' => $request->alamat,
             'catatan' => $request->catatan,
@@ -95,6 +99,8 @@ class CheckoutController extends Controller
             return $item->produk->harga * $item->jumlah;
         });
 
+        $ongkir = 10000;
+
         // Simpan pesanan
         $pesanan = Pesanan::create([
             'user_id' => $user->id,
@@ -132,7 +138,7 @@ class CheckoutController extends Controller
 
         $user = Auth::user();
 
-        $item = \App\Models\KeranjangItem::with('produk', 'keranjang')
+        $item = KeranjangItem::with('produk', 'keranjang')
             ->where('id', $itemId)
             ->whereHas('keranjang', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
@@ -140,7 +146,7 @@ class CheckoutController extends Controller
             ->firstOrFail();
 
         // Simpan pesanan
-        $pesanan = \App\Models\Pesanan::create([
+        $pesanan = Pesanan::create([
             'user_id' => $user->id,
             'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
             'status' => 'menunggu',
@@ -151,7 +157,7 @@ class CheckoutController extends Controller
         ]);
 
         // Simpan item pesanan
-        \App\Models\PesananItem::create([
+        PesananItem::create([
             'pesanan_id' => $pesanan->id,
             'produk_id' => $item->produk_id,
             'harga' => $item->produk->harga,

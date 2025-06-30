@@ -83,3 +83,27 @@ main {
     flex: 1 0 auto;
     padding-bottom: 60px; /* jika ada tombol dekat footer */
 }
+
+.live-chat-float {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 9999; /* pastikan di atas semua konten */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.live-chat-float:hover {
+    transform: scale(1.1);
+    background-color: #218838;
+}

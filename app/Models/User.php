@@ -6,12 +6,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    use HasRoles;
 
     protected $table = 'user';
 
@@ -42,5 +43,14 @@ class User extends Authenticatable
     public function pesanan()
     {
         return $this->hasMany(Pesanan::class, 'user_id');
+    }
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'from_id');
+    }
+
+    public function receivedChats()
+    {
+        return $this->hasMany(Chat::class, 'to_id');
     }
 }

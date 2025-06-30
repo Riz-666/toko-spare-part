@@ -63,8 +63,8 @@ class UserController extends Controller
             'foto' => $fileName,
             'role' => $request->role,
         ]);
-
-
+ 
+        $user->assignRole('admin');
         return redirect()->route('kelola.user')->with('success','Data Berhasil di tambahkan');
     }
 

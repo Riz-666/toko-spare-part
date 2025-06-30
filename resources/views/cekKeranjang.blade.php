@@ -107,7 +107,7 @@
     </div>
 
     <!-- Modal Checkout Semua -->
-    <form action="{{ route('keranjang.checkout') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('checkout.keranjang') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="modal fade" id="checkoutAllModal" tabindex="-1">
             <div class="modal-dialog">

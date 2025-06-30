@@ -1,5 +1,9 @@
 @extends('admin.layout.app')
 @section('content')
+
+<style>
+    
+</style>
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
@@ -13,20 +17,11 @@
                             <table class="table align-items-center mb-0" id="table1">
                                 <thead>
                                     <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Kategori</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Nama Produk</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Deskripsi</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Stok</th>
-                                            <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Harga</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Kategori</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Produk</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Deskripsi</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stok</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Harga</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
                                 </thead>
@@ -46,8 +41,10 @@
                                             <td class="align-middle text-center text-sm">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $prdk->nama }}</p>
                                             </td>
-                                            <td class="align-middle text-center text-sm">
-                                                <p class="text-xs font-weight-bold mb-0">{!! $prdk->deskripsi !!}</p>
+                                            <td class="align-middle text-center text-sm" style="max-width: 250px; max-height: 80px; overflow-y: auto;">
+                                                <span title="{!! strip_tags($prdk->deskripsi) !!}" data-bs-toggle="tooltip" data-bs-placement="top" style="display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 200px;">
+                                                    {!! Str::limit(strip_tags($prdk->deskripsi), 100) !!}
+                                                </span>
                                             </td>
                                             <td class="align-middle text-center text-sm">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $prdk->stok }}</p>
@@ -60,7 +57,7 @@
 
                                                 <form action="{{ Route('hapus.produk.proses',$prdk->id) }}" method="POST" enctype="multipart/form-data" class="d-inline">
                                                     @csrf
-                                                 <button class="btn btn-danger btn-sm show_confirm" data-konf-delete="{{ $prdk->nama }}"><i class="fa fa-trash show_confirm" style="font-size: 15px;"></i></button>
+                                                    <button class="btn btn-danger btn-sm show_confirm" data-konf-delete="{{ $prdk->nama }}"><i class="fa fa-trash show_confirm" style="font-size: 15px;"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -72,4 +69,13 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+    @push('scripts')
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+@endpush
+@endsection

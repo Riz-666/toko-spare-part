@@ -66,7 +66,7 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span
-                                                    class="text-secondary text-xs font-weight-bold">{{ $psn->pembayaran->metode_pembayaran }}</span>
+                                                    class="text-secondary text-xs font-weight-bold">{{ $psn->pembayaran->metode ?? 'Belum Bayar' }}</span>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span

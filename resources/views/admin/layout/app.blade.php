@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="{{ asset('/storage/default-img/logo-ct.png') }}">
     <title>
         Admin Dashboard
     </title>
@@ -37,11 +37,40 @@
     <link rel="stylesheet" href="{{ asset('select2/dist/select2-bootstrap4.css') }}">
     {{-- CkEditor --}}
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css">
+    
+    <style>
+        @media (max-width: 768px) {
+    #sidenav-main {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 250px;
+        height: 100vh;
+        background-color: #fff;
+        transition: left 0.3s ease;
+        z-index: 1050;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #sidenav-main.active {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+    @media (max-width: 768px) {
+    body {
+        overflow-x: hidden; /* penting agar sidebar tidak bikin scroll horizontal */
+    }
+}
+    </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
     @include('admin.layout.sidebar')
-    <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+    <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg px-3 px-md-4">
 
 
         @include('admin.layout.navbar')
@@ -148,6 +177,7 @@
     <script src="https://cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
     {{-- Axios --}}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");

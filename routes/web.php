@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\KategoriController;
@@ -13,7 +14,6 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +39,19 @@ Route::post('/login/logout', [LoginController::class, 'logout'])->name('logout')
 Route::get('/unlogin', [LoginController::class, 'unlogin'])->name('unlogin');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    //livechat
+    Route::get('/admin/chat-list', [ChatController::class, 'list'])->name('admin.chat.list');
+    Route::get('/admin/chat/{user}', [ChatController::class, 'index'])->name('admin.chat.index');
+    Route::get('/admin/chat/messages/{user}', [ChatController::class, 'getMessages'])->name('admin.chat.messages');
+    Route::post('/admin/chat/send', [ChatController::class, 'send'])->name('admin.chat.send');
+    // Untuk admin
+    Route::delete('/admin/chat/clear/{user}', [ChatController::class, 'clearChat'])->name('admin.chat.clear')->middleware(['auth', 'role:admin']);
+
     Route::get('admin/dashboard', [AdminController::class, 'index'])->name('admin.index');
 
     //Profile
     Route::get('/profile/admin', [AdminController::class, 'edit'])->name('profile.edit.admin');
+
     Route::post('/profile/admin', [AdminController::class, 'update'])->name('profile.update.admin');
 
     //Kelola User
@@ -96,10 +105,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {
+    //livechat
+    Route::get('/customer/chat/{user}', [ChatController::class, 'index'])->name('customer.chat.index');
+    Route::get('/customer/chat/messages/{user}', [ChatController::class, 'getMessages'])->name('customer.chat.messages');
+    Route::post('/customer/chat/send', [ChatController::class, 'send'])->name('customer.chat.send');
+    Route::delete('/customer/chat/clear/{user}', [ChatController::class, 'clearChat'])->name('customer.chat.clear')->middleware(['auth', 'role:customer']);
 
     //Profile
-    Route::get('/profile', [IndexController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [IndexController::class, 'update'])->name('profile.update');
+    Route::get('/profile/user', [IndexController::class, 'edit'])->name('user.edit.profile');
+
+    Route::post('/profile/user', [IndexController::class, 'update'])->name('user.update.profile');
 
     //add ke keranjang
     Route::post('/keranjang/tambah', [KeranjangController::class, 'tambah'])->name('keranjang.tambah');
@@ -110,6 +125,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     //Keranjang
     Route::get('/detail/keranjang', [KeranjangController::class, 'cekKeranjang'])->name('cek.keranjang');
+    
     //hapus
     Route::delete('/keranjang/{id}/hapus', [KeranjangController::class, 'hapus'])->name('keranjang.hapus');
 
@@ -118,12 +134,14 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     //proses checkout langsung
     Route::post('/checkout/proses', [CheckoutController::class, 'proses'])->name('checkout.proses');
+
     Route::get('/pesanan/{id}', [PesananController::class, 'detail'])->name('pesanan.detail');
 
     Route::post('/pesanan/{id}/bukti', [PembayaranController::class, 'upload'])->name('pesanan.uploadBukti');
 
     // dari chart
-    Route::post('/keranjang/checkout', [CheckoutController::class, 'checkoutDariKeranjang'])->name('keranjang.checkout');
+    Route::post('/checkout/keranjang', [CheckoutController::class, 'checkoutDariKeranjang'])->name('checkout.keranjang');
+
     // per-item
     Route::post('/keranjang/checkout/item/{id}', [CheckoutController::class, 'checkoutSatuan'])->name('keranjang.checkout.satuan');
 
@@ -131,9 +149,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::delete('/pesanan/{id}/hapus', [PemesananController::class, 'destroy'])->name('pesanan.hapus');
 
     //Cetak Bukti Pemesanan
-    Route::get('/pesanan/cetak/{id}',[PemesananController::class, 'cetak'])->name('pesanan.cetak');
+    Route::get('/pesanan/cetak/{id}', [PemesananController::class, 'cetak'])->name('pesanan.cetak');
 
     //pesanan batal
     Route::post('/pesanan/{id}/batalkan', [PemesananController::class, 'batalkan'])->name('pesanan.batalkan');
-
 });

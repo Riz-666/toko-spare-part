@@ -17,6 +17,7 @@ class KeranjangController extends Controller
         $keranjang = $user->keranjang()->with('item.produk')->first();
         return view('cekKeranjang', [
             'keranjang' => $keranjang,
+            'judul' => 'Cart'
         ]);
     }
 
@@ -57,18 +58,18 @@ class KeranjangController extends Controller
     }
 
     public function hapus($id)
-    {
-        $item = KeranjangItem::findOrFail($id);
+{
+    $item = KeranjangItem::with('keranjang')->findOrFail($id);
 
-        // Cek agar hanya user yang punya keranjang yang bisa hapus
-        if ($item->keranjang->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $item->delete();
-
-        return back()->with('success', 'Item berhasil dihapus dari keranjang');
+    if ((int) $item->keranjang->user_id !== auth()->id()){
+        abort(403, 'Unauthorized action.');
     }
+
+    $item->delete();
+
+    return back()->with('success', 'Item berhasil dihapus dari keranjang');
+}
+
 
     public function checkout()
     {

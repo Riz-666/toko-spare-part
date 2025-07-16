@@ -14,7 +14,10 @@ class AdminController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('admin.profile', compact('user'));
+        return view('admin.profile', [
+            'judul' => 'Edit Profile',
+            'user' => $user
+            ]);
     }
 
     public function update(Request $request)
@@ -47,6 +50,6 @@ class AdminController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Profil berhasil diperbarui');
+        return redirect()->route('profile.edit.admin')->with('success', 'Profil berhasil diperbarui');
     }
 }

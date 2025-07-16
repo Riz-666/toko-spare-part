@@ -2,6 +2,16 @@
     @section('content')
         <form action="{{ Route('add.kategori.proses') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <strong>Terjadi kesalahan:</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="container">
                 <div class="card">
                     <div class="card-body">
@@ -10,7 +20,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="nama_produk">Nama Kategori</label><br>
-                                <input type="text" class="form-control" name="nama">
+                                <input type="text" class="form-control" name="nama" value="{{ old('nama') }}">
                             </div>
                         </div>
                         <br>

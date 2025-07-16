@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="{{ asset('/storage/default-img/logo-ct.png') }}">
     <title>
         Admin Dashboard
     </title>
@@ -37,11 +37,42 @@
     <link rel="stylesheet" href="{{ asset('select2/dist/select2-bootstrap4.css') }}">
     {{-- CkEditor --}}
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/44.1.0/ckeditor5.css">
+
+    <style>
+        @media (max-width: 768px) {
+            #sidenav-main {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                width: 250px;
+                height: 100vh;
+                background-color: #fff;
+                transition: left 0.3s ease;
+                z-index: 1050;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            }
+
+            #sidenav-main.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+                /* penting agar sidebar tidak bikin scroll horizontal */
+            }
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
     @include('admin.layout.sidebar')
-    <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+    <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg px-3 px-md-4">
 
 
         @include('admin.layout.navbar')
@@ -148,6 +179,7 @@
     <script src="https://cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
     {{-- Axios --}}
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");
@@ -403,6 +435,76 @@
             });
         </script>
     @endif
+
+
+<script>
+    const chatAudio = new Audio("{{ asset('notif/notif_live_chat.wav') }}");
+
+    function checkNewChat() {
+        fetch("{{ route('admin.chat.check') }}")
+            .then(res => res.json())
+            .then(data => {
+                if (data.has_new) {
+                    const notif = document.createElement("div");
+                    notif.textContent = "💬 Pesan baru masuk!";
+                    Object.assign(notif.style, {
+                        position: 'fixed',
+                        top: '90px',
+                        left: '20px',
+                        backgroundColor: '#007bff',
+                        color: '#fff',
+                        padding: '10px 15px',
+                        borderRadius: '8px',
+                        fontWeight: 'bold',
+                        zIndex: 10000,
+                        boxShadow: '0 0 10px rgba(0,0,0,0.3)'
+                    });
+                    document.body.appendChild(notif);
+
+                    chatAudio.play().catch(() => {});
+
+                    setTimeout(() => notif.remove(), 6000);
+                }
+            })
+            .catch(console.error);
+    }
+
+    setInterval(checkNewChat, 10000); // setiap 10 detik
+</script>
+
+    <script>
+        const notifAudio = new Audio("{{ asset('notif/notif.wav') }}");
+
+        function checkPesananBaruMasuk() {
+            fetch("{{ route('admin.pesanan.checkCustomer') }}")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.new) {
+                        const notif = document.createElement("div");
+                        notif.textContent = "📦 Pesanan baru telah dibuat oleh customer!";
+                        Object.assign(notif.style, {
+                            position: 'fixed',
+                            bottom: '130px',
+                            right: '20px',
+                            backgroundColor: '#17a2b8',
+                            color: '#fff',
+                            padding: '10px 15px',
+                            borderRadius: '8px',
+                            fontWeight: 'bold',
+                            zIndex: 10000,
+                            boxShadow: '0 0 10px rgba(0,0,0,0.3)'
+                        });
+                        document.body.appendChild(notif);
+                        notifAudio.play();
+
+                        setTimeout(() => notif.remove(), 6000);
+                    }
+                });
+        }
+
+        setInterval(checkPesananBaruMasuk, 10000); // setiap 10 detik
+    </script>
+
 </body>
 
 </html>

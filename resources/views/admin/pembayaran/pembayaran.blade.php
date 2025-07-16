@@ -33,7 +33,7 @@
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <div>
-                                                        <img src="{{ asset('/storage/bukti-bayar/' . $byr->bukti_bayar) }}"
+                                                        <img src="{{ asset('/storage/bukti-bayar/' . $byr->bukti_bayar ) }}"
                                                             class="avatar avatar-sm me-3" alt="user1">
                                                     </div>
                                                     <div class="d-flex flex-column justify-content-center">
@@ -44,7 +44,7 @@
                                                 </div>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                                <p class="text-xs font-weight-bold mb-0">{{ $byr->metode_pembayaran }}</p>
+                                                <p class="text-xs font-weight-bold mb-0">{{ $byr->metode ?? 'Belum Di Pilih'}}</p>
                                             </td>
                                             <td class="align-middle text-center text-sm">
                                                 @if ($byr->status == 'belum bayar')

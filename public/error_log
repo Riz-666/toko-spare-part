@@ -1,0 +1,10 @@
+[29-Jun-2025 10:52:35 UTC] PHP Fatal error:  Trait "Spatie\Permission\Traits\HasRoles" not found in /home/lestarim/toko-spare-part/app/Models/User.php on line 12
+[01-Jul-2025 00:20:23 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/ChatController.php on line 11
+[01-Jul-2025 00:20:23 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/ChatController.php on line 11
+[01-Jul-2025 00:35:58 Asia/Jakarta] PHP Fatal error:  Cannot redeclare App\Http\Controllers\ChatController::checkNew_customer() in /home/lestarim/toko-spare-part/app/Http/Controllers/ChatController.php on line 186
+[01-Jul-2025 01:33:16 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/PesananController.php on line 14
+[01-Jul-2025 01:33:17 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/PesananController.php on line 14
+[01-Jul-2025 01:33:26 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/PesananController.php on line 14
+[01-Jul-2025 01:33:36 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/PesananController.php on line 14
+[01-Jul-2025 01:33:43 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/PesananController.php on line 14
+[01-Jul-2025 01:33:46 Asia/Jakarta] PHP Fatal error:  Trait "App\Http\Controllers\Illuminate\Support\Facades\Auth" not found in /home/lestarim/toko-spare-part/app/Http/Controllers/PesananController.php on line 14

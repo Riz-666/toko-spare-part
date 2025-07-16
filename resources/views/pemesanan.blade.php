@@ -30,10 +30,15 @@
                                     style="height: 180px; object-fit: cover;">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $item->produk->nama }}</h5>
-                                    <p class="card-text">Jumlah: {{ $item->jumlah }}</p>
                                     <p class="card-text">Harga: Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
-                                    <p class="card-text"><strong>Total:</strong> Rp
-                                        {{ number_format($item->subtotal, 0, ',', '.') }}</p>
+                                    <p class="card-text">Jumlah: {{ $item->jumlah }}</p>
+                                    <p class="card-text">Subtotal: Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
+                                    <p class="card-text">Ongkir: Rp
+                                        {{ number_format($item->pesanan->ongkir ?? 0, 0, ',', '.') }}</p>
+                                    <p class="card-text"><strong>Total Bayar:</strong>
+                                        Rp {{ number_format($item->subtotal + ($item->pesanan->ongkir ?? 0), 0, ',', '.') }}
+                                    </p>
+
                                     <span class="badge bg-{{ $statusClass }}">{{ ucfirst($status) }}</span>
                                     <p class="mt-4 text-secondary">Pesanan: {{ $item->pesanan->kode_pesanan }}</p>
                                     <a href="{{ route('pesanan.cetak', $item->pesanan->id) }}" target="_blank"
@@ -48,7 +53,9 @@
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-danger show_confirm w-100"
-                                                data-konf-delete="{{ $item->produk->nama }}"><i class="fas fa-trash show_confirm"></i> Di Batalkan, Hapus Pesanan?</button>
+                                                data-konf-delete="{{ $item->produk->nama }}"><i
+                                                    class="fas fa-trash show_confirm"></i> Di Batalkan, Hapus
+                                                Pesanan?</button>
                                         </form>
                                     @elseif ($item->pesanan->status == 'menunggu')
                                         <form action="{{ route('pesanan.batalkan', $item->pesanan->id) }}" method="POST"

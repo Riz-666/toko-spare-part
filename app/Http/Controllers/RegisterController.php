@@ -9,7 +9,9 @@ class RegisterController extends Controller
 {
     public function showForm()
     {
-        return view('register');
+        return view('register',[
+            'judul' => 'Buat Akun'
+        ]);
     }
 
     public function register(Request $request)
@@ -18,11 +20,11 @@ class RegisterController extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|unique:user,email',
             'password' => 'required|string|min:6|confirmed',
-            'telepon' => 'required|string|max:20',
+            'telepon' => 'required|digits_between:10,14|numeric',
             'alamat' => 'required|string',
         ]);
 
-        User::create([
+        $user = User::create([
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -30,6 +32,8 @@ class RegisterController extends Controller
             'alamat' => $request->alamat,
             'role' => 'customer',
         ]);
+
+        $user->assignRole('customer');
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login!');
     }

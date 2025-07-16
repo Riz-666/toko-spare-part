@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('kode_pesanan', 50)->unique();
             $table->enum('status', ['menunggu', 'diproses', 'dikirim', 'selesai', 'dibatalkan']);
             $table->enum('metode_pembayaran', ['qris', 'kartu_kredit', 'dana', 'cod']);
+            $table->integer('ongkir')->default(10000);
             $table->decimal('total', 15, 2);
             $table->text('alamat_pengiriman');
             $table->text('catatan')->nullable();

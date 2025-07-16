@@ -16,7 +16,7 @@
                         <div class="col-md-4">
                             <label for="nama">Metode Pembayaran</label><br>
                             <input type="text" class="form-control" name="metode_pembayaran" disabled
-                                value="{{ $pembayaran->metode_pembayaran }}">
+                                value="{{ $pembayaran->metode ?? 'Belum Di Pilih' }}">
                         </div>
                         <div class="col-md-4">
                             <label for="nama">Tanggal Bayar</label><br>

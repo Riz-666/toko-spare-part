@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="telepon">Metode Pembayaran</label><br>
-                            <input type="text" class="form-control" name="metode_pembayaran" value="{{ $pesanan->metode_pembayaran }}"  disabled>
+                            <input type="text" class="form-control" name="metode_pembayaran" value="{{ $pesanan->pembayaran->metode ?? 'Belum Di Pilih' }}"  disabled>
                         </div>
                         <div class="col-md-4">
                             <label for="alamat">Alamat Pengiriman</label><br>

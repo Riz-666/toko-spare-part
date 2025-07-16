@@ -13,28 +13,61 @@ use Illuminate\Support\Facades\Storage;
 class IndexController extends Controller
 {
     public function index()
-    {
-        $produk = Produk::with('kategori')->get();
-        $kategori = Kategori::all();
+{
+    if (Auth::check()) {
+        $user = Auth::user();
+        
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.index');
+        }
+    }
+    // Ambil semua produk dengan relasi kategorinya
+    $produk = Produk::with('kategori')->get();
 
-        $bestSelling = Produk::select('produk.*', DB::raw('SUM(pesanan_item.jumlah) as total_terjual'))
+    // Ambil semua kategori
+    $kategori = Kategori::all();
+
+    // Ambil 6 produk terlaris berdasarkan jumlah item yang dibeli
+    $bestSelling = Produk::with('kategori') // jika butuh juga data kategori
+        ->select(
+            'produk.id',
+            'produk.nama',
+            'produk.harga',
+            'produk.gambar',
+            'produk.deskripsi',
+            'produk.kategori_id',
+            
+            DB::raw('SUM(pesanan_item.jumlah) as total_terjual')
+        )
         ->join('pesanan_item', 'produk.id', '=', 'pesanan_item.produk_id')
-        ->groupBy('produk.id')
+        ->groupBy(
+            'produk.id',
+            'produk.nama',
+            'produk.harga',
+            'produk.gambar',
+            'produk.deskripsi',
+            'produk.kategori_id'
+        )
         ->orderByDesc('total_terjual')
-        ->take(6) // tampilkan 6 produk terlaris
+        ->take(6)
         ->get();
 
-        return view('index', compact('kategori', 'produk', 'bestSelling'));
-        return view('index', [
-            'produk' => $produk,
-            'kategori' => $kategori,
-        ]);
-    }
+    // Tampilkan ke halaman index
+    return view('index', [
+        'kategori' => $kategori,
+        'produk' => $produk,
+        'bestSelling' => $bestSelling,
+        'judul' => 'Lestari Motor'
+    ]);
+}
 
     public function edit()
     {
         $user = Auth::user();
-        return view('admin.profile', compact('user'));
+        return view('profile', [
+            'user' => $user,
+            'judul' => 'Profile'
+        ]);
     }
 
     public function update(Request $request)
@@ -67,6 +100,6 @@ class IndexController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Profil berhasil diperbarui');
+        return redirect()->route('user.edit.profile')->with('success', 'Profil berhasil diperbarui');
     }
 }

@@ -2,6 +2,16 @@
 @section('content')
     <form action="{{ Route('edit.user.proses', $user->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Terjadi kesalahan:</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="container">
             <div class="card">
                 <div class="card-body">
@@ -10,11 +20,11 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="nama">Nama</label><br>
-                            <input type="text" class="form-control" name="nama" value="{{ $user->nama }}">
+                            <input type="text" class="form-control" name="nama" value="{{ old('nama'),$user->nama }}">
                         </div>
                         <div class="col-md-4">
                             <label for="nama">email</label><br>
-                            <input type="text" class="form-control" name="email" value="{{ $user->email }}">
+                            <input type="text" class="form-control" name="email" value="{{ old('email'),$user->email }}">
                         </div>
                         <div class="col-md-4">
                             <label for="nama">Password</label><br>
@@ -25,11 +35,11 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="telepon">Telepon</label><br>
-                            <input type="text" class="form-control" name="telepon" value="{{ $user->telepon }}">
+                            <input type="text" class="form-control" name="telepon" value="{{ old('telepon'),$user->telepon }}">
                         </div>
                         <div class="col-md-4">
                             <label for="alamat">Alamat</label><br>
-                            <input type="text" class="form-control" name="alamat" value="{{ $user->alamat }}">
+                            <input type="text" class="form-control" name="alamat" value="{{ old('alamat'),$user->alamat }}">
                         </div>
                         <div class="col-md-4">
                             <label for="nama">Role</label><br>
@@ -44,6 +54,9 @@
                         <div class="col-md-12">
                             <label for="nama">Foto</label><br>
                             <input class="form-control" type="file" name="foto" value="{{ $user->foto }}">
+                            @error('foto')
+                                <div class="text-danger mt-1">{{ $message }}</div>
+                            @enderror
                             <input class="form-control" type="text" value="{{ $user->foto }}" disabled>
                         </div>
                     </div>

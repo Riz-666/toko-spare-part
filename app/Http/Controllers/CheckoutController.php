@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\CheckoutController;
+use App\Models\KeranjangItem;
 use App\Models\Pesanan;
 use App\Models\PesananItem;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class CheckoutController extends Controller
 {
@@ -22,15 +24,21 @@ class CheckoutController extends Controller
         ]);
 
         $produk = Produk::findOrFail($request->produk_id);
+        if ($produk->stok < $request->jumlah) {
+            return back()->with('error', 'Stok produk tidak mencukupi');
+        }
         $user = Auth::user();
 
         $total = $produk->harga * $request->jumlah;
-
+        $ongkir = 10000;
+        
+        // Simpan pesanan
         $pesanan = Pesanan::create([
             'user_id' => $user->id,
             'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
             'status' => 'menunggu',
-            'total' => $total,
+            'total' => $total + $ongkir,
+            'ongkir' => $ongkir,
             'metode_pembayaran' => $request->metode_pembayaran,
             'alamat_pengiriman' => $request->alamat,
             'catatan' => $request->catatan,
@@ -44,6 +52,10 @@ class CheckoutController extends Controller
             'subtotal' => $total,
         ]);
 
+        $produk->decrement('stok', $request->jumlah);
+
+        Cache::put('last_pesanan_baru_admin', $pesanan->id, now()->addMinutes(10));
+        
         return redirect()->route('pesanan.detail', $pesanan->id)->with('success', 'Pesanan berhasil dibuat');
     }
 
@@ -90,17 +102,22 @@ class CheckoutController extends Controller
             return back()->with('error', 'Keranjang kosong');
         }
 
-        // Hitung total
+        // Hitung total harga barang
         $total = $keranjang->item->sum(function ($item) {
             return $item->produk->harga * $item->jumlah;
         });
 
+        // Hitung total jumlah item untuk ongkir
+        $totalJumlahItem = $keranjang->item->sum('jumlah');
+        $ongkir = 10000 * $totalJumlahItem;
+        
         // Simpan pesanan
         $pesanan = Pesanan::create([
             'user_id' => $user->id,
             'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
             'status' => 'menunggu',
-            'total' => $total,
+            'total' => $total + $ongkir,
+            'ongkir' => $ongkir,
             'metode_pembayaran' => $request->metode_pembayaran,
             'alamat_pengiriman' => $request->alamat,
             'catatan' => $request->catatan,
@@ -116,9 +133,10 @@ class CheckoutController extends Controller
                 'subtotal' => $item->produk->harga * $item->jumlah,
             ]);
         }
-
+        $item->produk->decrement('stok', $item->jumlah);
         // Kosongkan keranjang
         $keranjang->item()->delete();
+        Cache::put('last_pesanan_baru_admin', $pesanan->id, now()->addMinutes(10));
 
         return redirect()->route('pesanan.detail', $pesanan->id)->with('success', 'Pesanan berhasil dibuat dari keranjang');
     }
@@ -132,7 +150,7 @@ class CheckoutController extends Controller
 
         $user = Auth::user();
 
-        $item = \App\Models\KeranjangItem::with('produk', 'keranjang')
+        $item = KeranjangItem::with('produk', 'keranjang')
             ->where('id', $itemId)
             ->whereHas('keranjang', function ($q) use ($user) {
                 $q->where('user_id', $user->id);
@@ -140,7 +158,7 @@ class CheckoutController extends Controller
             ->firstOrFail();
 
         // Simpan pesanan
-        $pesanan = \App\Models\Pesanan::create([
+        $pesanan = Pesanan::create([
             'user_id' => $user->id,
             'kode_pesanan' => 'ORDID-' . strtoupper(Str::random(8)),
             'status' => 'menunggu',
@@ -151,16 +169,17 @@ class CheckoutController extends Controller
         ]);
 
         // Simpan item pesanan
-        \App\Models\PesananItem::create([
+        PesananItem::create([
             'pesanan_id' => $pesanan->id,
             'produk_id' => $item->produk_id,
             'harga' => $item->produk->harga,
             'jumlah' => $item->jumlah,
             'subtotal' => $item->produk->harga * $item->jumlah,
         ]);
-
+        $item->produk->decrement('stok', $item->jumlah);
         // Hapus item dari keranjang
         $item->delete();
+        Cache::put('last_pesanan_baru_admin', $pesanan->id, now()->addMinutes(10));
 
         return redirect()->route('pesanan.detail', $pesanan->id)->with('success', 'Checkout berhasil untuk 1 produk');
     }

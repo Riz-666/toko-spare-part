@@ -8,6 +8,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class PesananController extends Controller
 {
@@ -30,22 +31,27 @@ class PesananController extends Controller
         ]);
     }
 
-    public function update(Request $request, string $id) {
+    public function update(Request $request, string $id)
+    {
         $pesanan = Pesanan::findOrFail($id);
+
         $rules = [
-            'status' => 'required'
+            'status' => 'required',
         ];
 
         $validatedData = $request->validate($rules);
 
         $pesanan->status = $request->status;
+        $pesanan->save();
 
-        $pesanan->save($rules);
+        // notif untuk user
+        Cache::put('last_verified_pesanan_id_user_' . $pesanan->user_id, $pesanan->id, now()->addMinutes(10));
 
         return redirect()->route('kelola.pesanan')->with('success', 'Berhasil Memperbarui Status');
     }
 
-    public function destroy(String $id){
+    public function destroy(string $id)
+    {
         $pesanan = Pesanan::findOrFail($id);
         $pesanan->delete();
 
@@ -86,19 +92,58 @@ class PesananController extends Controller
             'subtotal' => $subtotal,
         ]);
 
+        // Setelah pesanan berhasil dibuat
+        Cache::put('notif_pesanan_baru', $pesanan->id, now()->addMinutes(10));
+
         return back()->with('success', 'Pesanan berhasil dibuat!');
     }
+
     public function detail($id)
     {
         $pesanan = Pesanan::with(['user', 'item.produk'])->findOrFail($id);
 
         // Validasi: hanya pemilik pesanan yang bisa lihat
-        if (auth()->id() !== $pesanan->user_id) {
+        if (!auth()->user()->is($pesanan->user)) {
             abort(403, 'Tidak diizinkan mengakses pesanan ini.');
         }
-
         return view('checkout.detailPesanan', [
+            'judul' => 'Detail Pesanan',
             'pesanan' => $pesanan,
         ]);
+    }
+
+    public function checkNew_fromCustomer()
+    {
+        $lastId = Cache::get('last_pesanan_baru_admin');
+
+        if ($lastId) {
+            // Hapus cache supaya hanya muncul sekali
+            Cache::forget('last_pesanan_baru_admin');
+
+            return response()->json([
+                'new' => true,
+                'pesanan_id' => $lastId,
+            ]);
+        }
+
+        return response()->json(['new' => false]);
+    }
+
+    public function checkNew_customer()
+    {
+        $userId = auth()->id();
+        $lastVerifiedId = Cache::get('last_verified_pesanan_id_user_' . $userId);
+
+        if ($lastVerifiedId) {
+            // Hapus cache biar hanya muncul sekali
+            Cache::forget('last_verified_pesanan_id_user_' . $userId);
+
+            return response()->json([
+                'verified' => true,
+                'pesanan_id' => $lastVerifiedId,
+            ]);
+        }
+
+        return response()->json(['verified' => false]);
     }
 }

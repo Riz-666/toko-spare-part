@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <img src="{{ asset('/storage/default-img/logo-ct.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      Project
+      <img src="{{ asset('/storage/default-img/logo-ct.png') }}" alt="Logo" width="100" height="50" class="d-inline-block align-text-top">
+      
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -26,7 +26,7 @@
         @auth
           @if(auth()->user()->role === 'customer')
             <li class="nav-item">
-              <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ Route('profile.edit') }}"><i class="fa fa-user"></i> Profile</a>
+              <a class="nav-link {{ request()->routeIs('user.edit.profile') ? 'active' : '' }}" href="{{ Route('user.edit.profile') }}"><i class="fa fa-user"></i> Profile</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {{ request()->routeIs('cek.keranjang') ? 'active' : '' }}" href="{{ Route('cek.keranjang') }}"><i class="fa fa-shopping-cart"></i> Keranjang</a>
@@ -38,7 +38,7 @@
 
           <li class="nav-item">
             <form action="{{ route('logout') }}" method="POST" class="d-inline">@csrf
-              <button class="btn btn-link nav-link" type="submit"><i class="fa fa-power-off"></i> Logout</button>
+              <button class=" nav-link" type="submit"><i class="fa fa-power-off"></i> Logout</button>
             </form>
           </li>
         @endauth

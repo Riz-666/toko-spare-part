@@ -46,6 +46,13 @@ require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+$app->bind('path.public', function () {
+    return __DIR__;
+});
+
+$app->useStoragePath(__DIR__.'/../storage');
+
+
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(

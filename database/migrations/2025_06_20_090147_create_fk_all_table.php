@@ -38,6 +38,7 @@ return new class extends Migration {
         Schema::table('pembayaran', function (Blueprint $table) {
             $table->foreign('pesanan_id')->references('id')->on('pesanan')->onDelete('cascade');
         });
+
     }
 
     public function down(): void
@@ -67,6 +68,7 @@ return new class extends Migration {
         Schema::table('pembayaran', function (Blueprint $table) {
             $table->dropForeign(['pesanan_id']);
         });
+
     }
 };
 
